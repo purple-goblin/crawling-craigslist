@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 # 
 # For example:
 #
-#  query = 'search/web?query=+&is_telecommuting=1&is_parttime=1'
+# query = 'search/web?query=+&is_telecommuting=1&is_parttime=1'
 #
 
 
@@ -30,7 +30,9 @@ for sub in subdomains:
 	sub = sub.strip()
 	print 'Searching ' + sub + '.craigslist.org ...'
 	url = 'http://' + sub + '.craigslist.org/' + query
-	reply = urllib2.urlopen(url).read()
+	headers = {'User-agent': 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'}
+	req = urllib2.Request(url, None, headers)
+	reply = urllib2.urlopen(req).read()
 
 	soup = BeautifulSoup(reply)
 	if soup('div')[10].p:
