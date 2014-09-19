@@ -1,3 +1,6 @@
 *~
 .pyc
 .DS_Store
+
+# if I put .gitignore here, does it break git?
+.gitignore
