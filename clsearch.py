@@ -4,17 +4,15 @@ import webbrowser, os, sys, urllib2
 from bs4 import BeautifulSoup
 
 # Replace the value of query with the URL string as described in the 
-# README.txt file.                                  
-# 
-# For example:
+# README.txt file. For example:
 #
 # query = 'search/web?query=+&is_telecommuting=1&is_parttime=1'
-#
 
 
-query = ''
+query = 'search/wri?is_telecommuting=1&is_parttime=1'
 
 
+# create initial HTML tags and write them to output file
 beginning = """
 <html><title>Craigslist Search</title>
  <body>
@@ -23,9 +21,11 @@ beginning = """
 with open('out.htm','a') as out:
 	out.write(beginning)
 
+# open list of all subdomains
 with open('subdomains.txt','r') as f:
 	subdomains = f.readlines()
 
+# query each subdomain and build list of jobs
 for sub in subdomains:
 	sub = sub.strip()
 	print 'Searching ' + sub + '.craigslist.org ...'
@@ -35,41 +35,30 @@ for sub in subdomains:
 	reply = urllib2.urlopen(req).read()
 
 	soup = BeautifulSoup(reply)
-	if soup('div')[10].p:
-		para = soup('div')[10].p
+	if soup('p',class_="row"):
+		para = soup('p',class_="row")
 	else:
-	# break out of loop if we don't find a match for soup('div')[10].p
+	# if there are no matches at all, break out of the current loop
 		continue
 
-	# if para has a previous sibling, there are no local matches	
-	if para.previous_sibling.previous_sibling:
-		continue
+	# if the previous sibling of the first item is h4, this is the NEARBY
+	# section (which we don't want), so break out of the current loop
+	if para[0].previous_sibling.previous_sibling:
+		if para[0].previous_sibling.previous_sibling.name == "h4":
+			continue
 
 	matches = []
 	a = '<a href="' + url + '">' + sub + '</a>'
 	city = '<br><h3>Matches found in ' + a + ':</h3>'
 	matches.append(city)
 
-	while True:
-		path = para.span.a['href']
-		para.span.a['href'] = 'http://' + sub + '.craigslist.org' + path
-		matches.append(str(para))
+	for p in para:
+		matches.append(p)
 
-		try:
-			para = para.next_sibling.next_sibling
-		except:
-			break
-		if not para:
-			break
-		if not para.next_sibling.next_sibling:
-			break
-		if para.next_sibling.next_sibling == ' ':
-			break
-		if para.next_sibling.next_sibling.name != 'p':
-			break
-			
 	with open('out.htm','a') as out:
-		out.writelines(matches)
+		for match in matches:
+			line = str(match)
+			out.write(line)
 
 ending = '</body></html>'
 with open('out.htm','a') as out:
