@@ -4,7 +4,7 @@ import webbrowser, os, sys, urllib2
 from bs4 import BeautifulSoup
 
 # Replace the value of query with the URL string as described in the 
-# README.txt file. For example:
+# README file. For example:
 #
 # query = 'search/web?is_telecommuting=1&is_parttime=1'
 
