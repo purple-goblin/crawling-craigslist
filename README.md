@@ -4,7 +4,6 @@ To set up:
 
 * git clone https://github.com/purple-goblin/crawling-craigslist
 * cd crawling-craigslist
-* python clsearch.py
 
 To customize the search:
 
