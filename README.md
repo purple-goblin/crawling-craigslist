@@ -1,9 +1,11 @@
 # Crawling Craigslist
 
-To set up:
+## Set Up
 
 * git clone https://github.com/purple-goblin/crawling-craigslist
 * cd crawling-craigslist
+
+## Running the Script
 
 To customize the search:
 
