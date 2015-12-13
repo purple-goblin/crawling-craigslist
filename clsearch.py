@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 # query = 'search/web?is_telecommuting=1&is_parttime=1'
 
 
-query = 'search/wri?employment_type=2&query=technical+writer'
+query = ''
 
 
 # create initial HTML tags and write them to output file
